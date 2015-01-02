@@ -17,7 +17,7 @@ $(function(){
     }
   }
 
-  // 飞鸟娱乐
+  // 飞鸟娱乐 
   // var alink = $('.subject');
   // alink.each(function(i,v){
   //   var moive_name = $(v).find('a').first().text();
