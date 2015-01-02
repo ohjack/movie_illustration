@@ -1,20 +1,21 @@
 $(function(){
   var alink = $('.inddline');
-  if(alink){
-    alink.each(function(i,v){
-      var obj = $(v);
-      var url = obj.attr('href')
-      getAjaxImage(url,obj)
-    });
-  }else{
-    var alink = $('.co_area2 table a');
-    if(alink){
+  if(alink.length > 0){
       alink.each(function(i,v){
         var obj = $(v).find('a').eq(1);
         var url = obj.attr('href')
         getAjaxImage(url,obj)
       });
+  }else{
+    var alink = $('.co_area2 table a');
+    if(alink.length > 0){
+      alink.each(function(i,v){
+        var obj = $(v);
+        var url = obj.attr('href')
+        getAjaxImage(url,obj)
+      });
     }
+    
   }
 
   // 飞鸟娱乐 
