@@ -15,7 +15,19 @@ $(function(){
         getAjaxImage(url,obj)
       });
     }
-    
+  }
+
+  function showMoviePic(that){
+    var html = $(that).html();
+    var left = $(that).offset().left;
+    var top = $(that).offset().top;
+    if($('#movieBox').length > 0){
+      $('#movieBox').html(html);
+    }else{
+      $('body').append("<div id='movieBox'>html</div>");
+    }
+    $('#movieBox').find('img').width(300);
+    $('#movieBox').offset({'left':left,'top':top})
   }
 
   // 飞鸟娱乐 
@@ -43,6 +55,7 @@ $(function(){
   // });
 })
 
+
 function getAjaxImage(url,obj){
   if(url){
       var xhr = new XMLHttpRequest();
@@ -57,16 +70,32 @@ function getAjaxImage(url,obj){
             // console.debug(matchArr);
             if(matchArr){
               var imagePath = matchArr[3];
-              obj.after("<p><a href='"+url+"' target='_blank'><img src='"+imagePath+"' height='60' /></a></p>");
+              obj.after("<p><a href='"+url+"' class='js_movie_pic' target='_blank'><img src='"+imagePath+"' height='60' /></a></p>");
             }else{
               obj.after("<font color='red'>无图片</font>");
             }
+            $('.js_movie_pic').hover(function() {
+              callbackPic(this);
+            }, function() {
+              $('#movieBox').remove();
+            });
+
+            function callbackPic(that){
+              var html = $(that).html();
+              var left = $(that).offset().left+$(that).find('img').width();
+              var top = $(that).offset().top-$(that).find('img').height();
+              if($('#movieBox').length > 0){
+                $('#movieBox').html(html);
+              }else{
+                $('body').append("<div id='movieBox'>html</div>");
+              }
+              $('#movieBox').find('img').width('auto');
+              $('#movieBox').find('img').height(350);
+              $('#movieBox').offset({'left':left,'top':top})
+            }
       　　}
-      }
+      }//$(this).offset.left
       xhr.send();
       // return false;
   }
 }
-
-
-
