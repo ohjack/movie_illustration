@@ -1,3 +1,4 @@
+var timeout;
 $(function(){
   var imageMath = /<div id="Zoom">(.[^"]*)<img(.[^\/>]+)src="([^\"]+)/;
   var alink = $('.inddline');
@@ -75,11 +76,17 @@ function getAjaxImage(url, obj, imageMath){
             }else{
               obj.after("<font color='red'>无图片</font>");
             }
-            $('.js_movie_pic').hover(function() {
-              callbackPic(this);
-            }, function() {
-              $('#movieBox').remove();
-            });
+
+            if(timeout){
+              clearTimeout(timeout);
+            }
+            timeout = setTimeout(function(){
+              $('.js_movie_pic').hover(function() {
+                callbackPic(this);
+              }, function() {
+                $('#movieBox').remove();
+              });
+            },150);
 
             function callbackPic(that){
               var pic = $(that).html();
@@ -88,11 +95,13 @@ function getAjaxImage(url, obj, imageMath){
               if($('#movieBox').length > 0){
                 $('#movieBox').html(pic);
               }else{
-                $('body').append("<div id='movieBox'>"+pic+"</div>");
+                $('body').append("<div id='movieBox' style='display:none;'>"+pic+"</div>");
               }
               $('#movieBox').find('img').width('auto');
               $('#movieBox').find('img').height(350);
               $('#movieBox').offset({'left':left+3,'top':top+12})
+              $('#movieBox').css('position','fixed');
+              $('#movieBox').fadeIn('fast');
             }
       　　}
       }//$(this).offset.left
