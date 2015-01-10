@@ -1,18 +1,32 @@
 $(function(){
+  var imageMath = /<div id="Zoom">(.[^"]*)<img(.[^\/>]+)src="([^\"]+)/;
   var alink = $('.inddline');
+  //电影天堂
   if(alink.length > 0){
       alink.each(function(i,v){
         var obj = $(v).find('a').eq(1);
         var url = obj.attr('href')
-        getAjaxImage(url,obj)
+        getAjaxImage(url,obj,imageMath)
       });
-  }else{
+  }else if($('.co_area2 table a').length > 0){
     var alink = $('.co_area2 table a');
     if(alink.length > 0){
       alink.each(function(i,v){
         var obj = $(v);
         var url = obj.attr('href')
-        getAjaxImage(url,obj)
+        getAjaxImage(url,obj,imageMath)
+      });
+    }
+  //orzx
+  }else if($('.list p a').length > 0){
+    var alink = $('.list p a');
+    imageMath = /\[img\](((.[^\[]*)))\[\/img\]/;
+    if(alink.length > 0){
+      alink.each(function(i,v){
+        var obj = $(v);
+        var url = obj.attr('href')
+        getAjaxImage(url,obj,imageMath)
+        // return false;
       });
     }
   }
@@ -42,8 +56,7 @@ $(function(){
   // });
 })
 
-
-function getAjaxImage(url,obj){
+function getAjaxImage(url, obj, imageMath){
   if(url){
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url, true);
@@ -51,10 +64,11 @@ function getAjaxImage(url,obj){
       　　if (xhr.readyState == 4) {
             var msg = xhr.responseText;
             //电影天堂;
-            msg = msg.replace(/[\r\n\t\f\　]/g,"").replace(/style="(.[^\"]+)"/g,"");
-            var imageMath = /<div id="Zoom">(.[^"]*)<img(.[^\/>]+)src="([^\"]+)/;
+            msg = msg.replace(/[\r\n\t\f\　]/g,"").replace(/>(.[\S]*)</g,'').replace(/style="(.[^\"]+)"/g,"")
             var matchArr = msg.match(imageMath);
-            // console.debug(matchArr);
+
+            // console.debug(imageMath,matchArr,msg);
+
             if(matchArr){
               var imagePath = matchArr[3];
               obj.after("<p><a href='"+url+"' class='js_movie_pic' target='_blank'><img src='"+imagePath+"' height='60' /></a></p>");
@@ -68,13 +82,13 @@ function getAjaxImage(url,obj){
             });
 
             function callbackPic(that){
-              var html = $(that).html();
+              var pic = $(that).html();
               var left = $(that).offset().left+$(that).find('img').width();
               var top = $(that).offset().top-$(that).find('img').height();
               if($('#movieBox').length > 0){
-                $('#movieBox').html(html);
+                $('#movieBox').html(pic);
               }else{
-                $('body').append("<div id='movieBox'>html</div>");
+                $('body').append("<div id='movieBox'>"+pic+"</div>");
               }
               $('#movieBox').find('img').width('auto');
               $('#movieBox').find('img').height(350);
@@ -83,6 +97,5 @@ function getAjaxImage(url,obj){
       　　}
       }//$(this).offset.left
       xhr.send();
-      // return false;
   }
 }

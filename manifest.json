@@ -1,8 +1,8 @@
 ﻿{
     "manifest_version": 2,
     "name": "movie_iIIustration",
-    "description": "为电影天堂列表页增加相应图片",
-    "version": "0.6",
+    "description": "为电影天堂|orzx.im列表页增加相应图片",
+    "version": "0.7",
     "background": { "scripts": ["jquery-2.0.0.min.js","spider.js"] },
     "icons": 
     { 
