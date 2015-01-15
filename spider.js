@@ -65,7 +65,7 @@ function getAjaxImage(url, obj, imageMath){
       　　if (xhr.readyState == 4) {
             var msg = xhr.responseText;
             //电影天堂;
-            msg = msg.replace(/[\r\n\t\f\　]/g,"").replace(/>(.[\S]*)</g,'').replace(/style="(.[^\"]+)"/g,"")
+            msg = msg.replace(/[\r\n\t\f\　]/g,"").replace(/>(.[\S]*)</g,'><').replace(/style="(.[^\"]+)"/g,"")
             var matchArr = msg.match(imageMath);
 
             // console.debug(imageMath,matchArr,msg);
